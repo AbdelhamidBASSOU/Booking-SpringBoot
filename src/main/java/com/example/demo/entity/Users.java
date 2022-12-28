@@ -1,0 +1,45 @@
+package com.example.demo.entity;
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "Users")
+public class Users implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+   @Column(name = "first_name")
+    private String firstName;
+
+   @Column(name = "last_name")
+    private String lastName;
+
+   @Column(name = "username")
+    private String username;
+
+   @Column(name = "email")
+    private String email;
+
+   @Column(name = "password")
+    private String password;
+
+   @Column(name = "reference")
+   private String reference;
+
+
+
+   @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
+}
