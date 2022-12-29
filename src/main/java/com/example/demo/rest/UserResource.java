@@ -1,13 +1,33 @@
 package com.example.demo.rest;
 
 import com.example.demo.entity.Users;
+import com.example.demo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-public interface UserResource {
+@RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
+public class UserResource {
+
+    private final UserService userService;
+
     @PostMapping("/add")
-    Users addUser(@RequestBody Users user);
+    public Users addUser(@RequestBody Users user){
+        System.out.println("dfghjk");
+        return userService.addUser(user);
+    }
 
     @PutMapping("{user_id}")
-    Users updateUser(@PathVariable Long user_id, @RequestBody Users user);
+    public Users updateUser(@PathVariable Long user_id, @RequestBody Users user){
+        return userService.updateUser(user_id,user);
+    }
+    @GetMapping("/")
+    public List<Users> getUsers(){
+        return userService.getAll();
+    }
+
+
 }

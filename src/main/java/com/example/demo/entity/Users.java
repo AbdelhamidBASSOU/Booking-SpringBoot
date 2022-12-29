@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,16 +10,18 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Users implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
    @Column(name = "first_name")
@@ -39,7 +43,12 @@ public class Users implements Serializable {
    private String reference;
 
 
+   @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> role;
 
-   @ManyToOne(fetch = FetchType.EAGER)
-    private Role role;
+    @OneToMany(mappedBy = "client",fetch = FetchType.EAGER)
+    private List<Reservation> reservationList;
+
+
+    private boolean isBanned;
 }

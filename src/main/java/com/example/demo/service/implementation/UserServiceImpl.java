@@ -1,26 +1,30 @@
 package com.example.demo.service.implementation;
 
-import com.example.demo.entity.Role;
-import com.example.demo.entity.Users;
+import com.example.demo.entity.*;
+import com.example.demo.repository.HotelRepository;
+import com.example.demo.repository.ReservationRepository;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import java.util.Collections;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+
+    private final   UserRepository userRepository;
+    private final  RoleRepository roleRepository;
+
+    private final ReservationRepository reservationRepository;
+    private final HotelRepository hotelRepository;
     @Override
     public Optional<Users> getOnById(Long id) {
         return userRepository.findById(id);
@@ -28,68 +32,60 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users addUser(Users user) {
-        Pattern patternEmail = Pattern.compile("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$");
-        Pattern patternPassword = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
-        if (user.getEmail()!=null && user.getPassword() !=null && user.getUsername() !=null){
-            Matcher matcherEmail = patternEmail.matcher(user.getEmail());
-            Matcher matcherPassword = patternPassword.matcher(user.getPassword());
-            if(matcherEmail.matches() && matcherPassword.matches()) {
-                Optional<Users> userByEmail = userRepository.findById(user.getId());
-                if (userByEmail.isPresent()) {
-                    throw new IllegalStateException("Email existe déja");
-                } else {
-                    user.setRole(new Role(Long.valueOf(1)));
-                    return userRepository.save(user);
-                }
-            }else{
-                throw new IllegalStateException("Email or password Format Invalid");
-            }
-        }else{
-            throw new IllegalStateException("il faut remplire tous les champs");
-        }
+
+        return userRepository.save(user);
     }
     @Override
     public Users updateUser(Long id, Users user) {
-        Users userById = userRepository.findById(id).orElse(null);
-        Pattern patternPassword = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
-        if(userById != null){
-            if (user.getEmail()!=null && user.getPassword() !=null && user.getUsername() !=null){
-                Matcher matcherPassword = patternPassword.matcher(user.getPassword());
-                if(userById.getEmail().equals(user.getEmail()) && matcherPassword.matches()) {
-                    userById.setEmail(user.getEmail());
-                    userById.setPassword(user.getPassword());
-                    userById.setUsername(user.getUsername());
-                    return userById;
-                }else{
-                    if(!userById.getEmail().equals(user.getEmail())){
-                        throw new IllegalStateException("email address cannot be changed");
-                    }else{
-                        throw new IllegalStateException("password Format Invalid");
-                    }
-                }
-            }else{
-                throw new IllegalStateException("fill all the inputs");
-            }
+        Users userWithId= userRepository.findById(id).orElse(null);
+        if(userWithId != null ){
+            userWithId.setFirstName(user.getFirstName());
+            userWithId.setLastName(user.getLastName());
+            userWithId.setUsername(user.getUsername());
+            userWithId.setEmail(user.getEmail());
+            userWithId.setPassword(user.getPassword());
+            userWithId.setReference(user.getReference());
+            userWithId.setRole(user.getRole());
+
+            return userWithId;
         }else{
-            throw new IllegalStateException("id doesnt exist !");
+            throw new IllegalStateException("room cannot be found");
         }
     }
 
-    @Override
-    public Users getUser(String username){
-        return null;
-    }
 
     @Override
-    public List<Users> getUsers() {
-        return null;
-    }
-
-    @Override
-    public UserDetails findByEmail(String email){
+    public Users findByEmail(String email){
         Users users = userRepository.findByEmail(email);
 
-        User user = new  User(users.getEmail(), new BCryptPasswordEncoder().encode(users.getPassword()), Collections.singleton(new SimpleGrantedAuthority(users.getRole().getName())));
-        return user;
+        return users;
+    }
+
+    @Override
+    public List <Users> getAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void addRoleToUser(String username, String roleName) {
+        Users user = userRepository.findByUsername(username);
+        Role role = roleRepository.findByName(roleName);
+        user.getRole().add(role);
+    }
+    @Override
+    public void banUser(String username){
+        Users user=userRepository.findByUsername(username);
+        user.setBanned(true);
+    }
+    @Override
+    public void approveHotel(Long id){
+        Hotel hotel = hotelRepository.findById(id).orElse(null);
+        hotel.setApproved(true);
+    }
+
+    @Override
+    public void acceptReservation(Long id){
+        Reservation res = reservationRepository.findById(id).orElse(null);
+        res.setStatus(Status.accepted);
     }
 }

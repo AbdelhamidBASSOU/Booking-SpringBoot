@@ -6,6 +6,8 @@ import com.example.demo.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
@@ -17,8 +19,8 @@ private final RoomRepository roomRepository;
 
     @Override
     public Room updateRoom(Room room, Long id) {
-          Room roomWithId= roomRepository.findById(room.getId()).orElse(null);
-         if(id != null){
+          Room roomWithId= roomRepository.findById(id).orElse(null);
+         if(roomWithId != null){
           roomWithId.setCapacity(room.getCapacity());
           roomWithId.setRoomNumber(room.getRoomNumber());
           roomWithId.setType(room.getType());
@@ -28,11 +30,15 @@ private final RoomRepository roomRepository;
 
           return roomWithId;
          }else{
-             throw new IllegalStateException("room cannot be find");
+             throw new IllegalStateException("room cannot be found");
          }
 
     }
 
+    @Override
+    public List<Room> findAll(){
+        return roomRepository.findAll();
+    }
 
 
 }

@@ -31,11 +31,12 @@ public class Hotel implements Serializable {
     private String address;
 
     @OneToOne
-    private Manager manager;
+    private Users manager;
 
-    @OneToMany(mappedBy = "hotel",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hotel",fetch = FetchType.EAGER)
     private List<Room> roomList;
 
+    private boolean isApproved;
 
 
 

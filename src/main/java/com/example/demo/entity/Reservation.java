@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Reservation")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Reservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +34,9 @@ public class Reservation implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "clientId")
-    private Client client;
+    private Users client;
 
-    @OneToMany(mappedBy = "reservation",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "reservation",fetch = FetchType.EAGER)
     private List<Room> roomList;
 
     @Enumerated(EnumType.STRING)
