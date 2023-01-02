@@ -14,4 +14,6 @@ public interface HotelService {
     Hotel updateHotel(Hotel hotel, Long id);
 
     List<Hotel> getAll();
+
+    Hotel approveHotel(Long id);
 }

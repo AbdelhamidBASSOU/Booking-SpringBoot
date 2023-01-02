@@ -23,6 +23,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public Hotel addHotel(Hotel hotel) {
+         hotel.setApproved(false);
         return hotelRepository.save(hotel);
 
     }
@@ -36,7 +37,7 @@ public class HotelServiceImpl implements HotelService {
             hotelWithId.setAddress(hotel.getAddress());
             hotelWithId.setRoomList(hotel.getRoomList());
             hotelWithId.setManager(hotel.getManager());
-                return hotelWithId;
+                return hotelRepository.save(hotelWithId) ;
             }else{
                 throw new IllegalStateException("Hotel cannot be found !");
             }
@@ -45,6 +46,13 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<Hotel> getAll(){
         return hotelRepository.findAll();
+    }
+    @Override
+    public Hotel approveHotel(Long id ){
+        Hotel hotelWithId = hotelRepository.findById(id).orElse(null);
+        hotelWithId.setApproved(true);
+        return hotelRepository.save(hotelWithId);
+
     }
 
 }

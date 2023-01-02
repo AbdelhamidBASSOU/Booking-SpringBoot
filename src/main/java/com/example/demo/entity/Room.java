@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,10 +36,11 @@ public class Room  implements Serializable {
     @Column(name = "price")
     private double price;
 
+
     @ManyToOne
     private Hotel hotel;
 
-    @ManyToOne
-    private Reservation reservation;
+    @OneToMany(mappedBy = "room",fetch = FetchType.EAGER)
+    private List<Reservation> listReservation;
 
 }

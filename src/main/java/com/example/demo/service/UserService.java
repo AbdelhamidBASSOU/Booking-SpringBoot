@@ -22,7 +22,6 @@ public interface UserService {
 
     void banUser(String username);
 
-    void approveHotel(Long id);
 
-    void acceptReservation(Long id);
+
 }

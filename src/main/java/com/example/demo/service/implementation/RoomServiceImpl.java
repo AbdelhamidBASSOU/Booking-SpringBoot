@@ -25,7 +25,8 @@ private final RoomRepository roomRepository;
           roomWithId.setRoomNumber(room.getRoomNumber());
           roomWithId.setType(room.getType());
           roomWithId.setPrice(room.getPrice());
-          roomWithId.setReservation(room.getReservation());
+          roomWithId.setListReservation(room.getListReservation());
+          roomWithId.setListReservation(room.getListReservation());
           roomWithId.setHotel(room.getHotel());
 
           return roomWithId;
@@ -39,6 +40,8 @@ private final RoomRepository roomRepository;
     public List<Room> findAll(){
         return roomRepository.findAll();
     }
+
+
 
 
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,20 +25,21 @@ public class Reservation implements Serializable {
     private Long id;
 
     @Column(name = "totalPrice")
-    private int totalPrice;
+    private double totalPrice;
 
     @Column(name = "startDate")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "endDate")
-    private Date endDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "clientId")
     private Users client;
 
-    @OneToMany(mappedBy = "reservation",fetch = FetchType.EAGER)
-    private List<Room> roomList;
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
 
     @Enumerated(EnumType.STRING)
     private Status status;

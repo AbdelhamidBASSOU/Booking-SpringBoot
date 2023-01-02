@@ -6,8 +6,6 @@ import com.example.demo.repository.ReservationRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import java.util.Collections;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +21,6 @@ public class UserServiceImpl implements UserService {
     private final   UserRepository userRepository;
     private final  RoleRepository roleRepository;
 
-    private final ReservationRepository reservationRepository;
-    private final HotelRepository hotelRepository;
     @Override
     public Optional<Users> getOnById(Long id) {
         return userRepository.findById(id);
@@ -32,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users addUser(Users user) {
-
+        user.setBanned(false);
         return userRepository.save(user);
     }
     @Override
@@ -46,18 +42,15 @@ public class UserServiceImpl implements UserService {
             userWithId.setPassword(user.getPassword());
             userWithId.setReference(user.getReference());
             userWithId.setRole(user.getRole());
-
             return userWithId;
         }else{
             throw new IllegalStateException("room cannot be found");
         }
     }
 
-
     @Override
     public Users findByEmail(String email){
         Users users = userRepository.findByEmail(email);
-
         return users;
     }
 
@@ -77,15 +70,7 @@ public class UserServiceImpl implements UserService {
         Users user=userRepository.findByUsername(username);
         user.setBanned(true);
     }
-    @Override
-    public void approveHotel(Long id){
-        Hotel hotel = hotelRepository.findById(id).orElse(null);
-        hotel.setApproved(true);
-    }
 
-    @Override
-    public void acceptReservation(Long id){
-        Reservation res = reservationRepository.findById(id).orElse(null);
-        res.setStatus(Status.accepted);
-    }
+
+
 }
