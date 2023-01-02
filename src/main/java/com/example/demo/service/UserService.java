@@ -21,6 +21,7 @@ public interface UserService {
     void addRoleToUser(String username, String roleName);
 
     void banUser(String username);
+    Users loadUserByUsername(String username);
 
 
 

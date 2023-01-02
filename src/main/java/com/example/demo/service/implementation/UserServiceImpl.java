@@ -71,6 +71,9 @@ public class UserServiceImpl implements UserService {
         user.setBanned(true);
     }
 
-
+    @Override
+    public Users loadUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
 }
