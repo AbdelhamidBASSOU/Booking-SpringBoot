@@ -6,6 +6,7 @@ import com.example.demo.repository.RoomRepository;
 import com.example.demo.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -19,26 +20,31 @@ public class ReservationResource {
     private final ReservationService reservationService;
     private final RoomRepository roomRepository;
     @PostMapping("/add")
+    @PostAuthorize("hasAnyAuthority('Admin','Manager','Client')")
     public Reservation addReservation(@RequestBody Reservation reservation){
         return reservationService.addReservation(reservation);
     }
 
     @PutMapping("{reservation_id}")
+    @PostAuthorize("hasAnyAuthority('Admin','Manager','Client')")
     public Reservation updateReservation(@PathVariable Long reservation_id, @RequestBody Reservation reservation){
         return reservationService.updateReservation(reservation ,reservation_id);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PostAuthorize("hasAnyAuthority('Admin','Manager','Client')")
     public void deleteById(@PathVariable Long id) {
         reservationService.deleteById(id);
     }
 
     @GetMapping("/id/{id}")
+    @PostAuthorize("hasAnyAuthority('Admin','Manager','Client')")
     public Reservation getOne(@PathVariable("id") Long id) {
         return reservationService.getOne(id);
     }
 
     @GetMapping("/")
+    @PostAuthorize("hasAnyAuthority('Admin','Manager','Client')")
     public List<Reservation> findAll(){
         return reservationService.getAll();
 

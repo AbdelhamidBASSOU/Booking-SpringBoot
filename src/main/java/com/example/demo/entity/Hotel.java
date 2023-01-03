@@ -3,11 +3,12 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Hotel implements Serializable {
     @OneToOne
     private Users manager;
 
-    @OneToMany(mappedBy = "hotel",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hotel",fetch = FetchType.LAZY)
     private List<Room> roomList;
 
     private boolean isApproved;

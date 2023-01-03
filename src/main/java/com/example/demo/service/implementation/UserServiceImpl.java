@@ -1,12 +1,12 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.entity.*;
-import com.example.demo.repository.HotelRepository;
-import com.example.demo.repository.ReservationRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -18,6 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private final   UserRepository userRepository;
     private final  RoleRepository roleRepository;
 
@@ -29,6 +31,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users addUser(Users user) {
         user.setBanned(false);
+        String pw = user.getPassword();
+        user.setPassword(passwordEncoder.encode(pw));
         return userRepository.save(user);
     }
     @Override

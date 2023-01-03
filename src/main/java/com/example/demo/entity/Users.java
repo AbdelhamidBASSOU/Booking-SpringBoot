@@ -3,13 +3,11 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -46,7 +44,7 @@ public class Users implements Serializable {
    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> role;
 
-    @OneToMany(mappedBy = "client",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
     private List<Reservation> reservationList;
 
 

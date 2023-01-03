@@ -3,6 +3,7 @@ package com.example.demo.rest;
 import com.example.demo.entity.Users;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +22,12 @@ public class UserResource {
     }
 
     @PutMapping("{user_id}")
+    @PostAuthorize("hasAnyAuthority('Admin')")
     public Users updateUser(@PathVariable Long user_id, @RequestBody Users user){
         return userService.updateUser(user_id,user);
     }
     @GetMapping("/")
+    @PostAuthorize("hasAnyAuthority('Admin')")
     public List<Users> getUsers(){
         return userService.getAll();
     }

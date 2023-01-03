@@ -3,7 +3,7 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class Room  implements Serializable {
     @ManyToOne
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "room",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY)
     private List<Reservation> listReservation;
 
 }

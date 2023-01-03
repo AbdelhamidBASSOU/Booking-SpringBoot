@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 
 
+import io.swagger.models.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailService );
+
     }
 
     @Override
@@ -31,8 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.headers().frameOptions().disable();
-        http.authorizeRequests().antMatchers("/refreshToken/**","/login/**").permitAll();
-        //http.authorizeRequests().antMatchers(HttpMethod.POST,"**/users/**").hasAnyAuthority("Admin");
+        http.authorizeRequests().antMatchers("/refreshToken/**","/login/**","/**/users/add").permitAll();
         //http.authorizeRequests().antMatchers(HttpMethod.GET,"**/users/**").hasAnyAuthority("User");
         // http.formLogin();
         http.authorizeRequests().anyRequest().authenticated();

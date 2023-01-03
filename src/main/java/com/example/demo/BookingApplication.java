@@ -2,15 +2,23 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 
 @SpringBootApplication
-@EnableSwagger2
+@EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class BookingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookingApplication.class, args);
+	}
+	@Bean
+	PasswordEncoder passwordEncoder(){
+		return new BCryptPasswordEncoder();
 	}
 
 }
