@@ -3,9 +3,11 @@ package com.example.demo.service.implementation;
 import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Room;
 import com.example.demo.entity.Status;
+import com.example.demo.entity.Users;
 import com.example.demo.repository.ReservationRepository;
 import com.example.demo.repository.RoomRepository;
 import com.example.demo.service.ReservationService;
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
+
+    private final UserService userService;
 
 
     @Override
@@ -87,5 +91,10 @@ public class ReservationServiceImpl implements ReservationService {
         long numberOfNights = ChronoUnit.DAYS.between(startDate, endDate);
         double price=room.getPrice();
         return numberOfNights * price;
+    }
+    @Override
+    public List<Reservation> getReservationByUserId(Users users) {
+        System.out.println(this.reservationRepository.findByClient(users));
+        return reservationRepository.findByClient(users);
     }
 }

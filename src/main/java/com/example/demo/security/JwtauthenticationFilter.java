@@ -3,6 +3,7 @@ package com.example.demo.security;
 
 
 import com.auth0.jwt.JWT;
+import com.example.demo.security.model.myUser;
 import org.springframework.security.core.Authentication;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,11 +46,14 @@ public class JwtauthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         System.out.println("successfulAuthentication");
-        User user = (User) authResult.getPrincipal();
+        myUser user = (myUser) authResult.getPrincipal();
         Algorithm algo = Algorithm.HMAC256(JWTUtil.SECRET);
         String JwtAccessToken = JWT.create().withSubject((user.getUsername()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + JWTUtil.EXPIRE_TOKEN))
                 .withIssuer((request.getRequestURL().toString()))
+                .withClaim("user_id",user.getId())
+                .withClaim("name",user.getName())
+                .withClaim("enabled",user.getIs_active())
                 .withClaim("roles",user.getAuthorities().stream().map(ga -> ga.getAuthority()).collect(Collectors.toList()))
                 .sign((algo));
 
@@ -59,8 +63,8 @@ public class JwtauthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withIssuer((request.getRequestURL().toString()))
                 .sign((algo));
         Map<String,String> idToken =new HashMap<>();
-        idToken.put("accesse-token",JwtAccessToken);
-        idToken.put("resresh-token",JwtRefreshToken);
+        idToken.put("accessToken",JwtAccessToken);
+        idToken.put("refreshToken",JwtRefreshToken);
         response.setContentType(("application/json"));
        new ObjectMapper().writeValue(response.getOutputStream(),idToken);
     }

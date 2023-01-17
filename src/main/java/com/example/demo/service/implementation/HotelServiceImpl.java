@@ -1,6 +1,7 @@
 package com.example.demo.service.implementation;
 
 import com.example.demo.entity.Hotel;
+import com.example.demo.entity.Users;
 import com.example.demo.repository.HotelRepository;
 import com.example.demo.service.HotelService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public Hotel updateHotel(Hotel hotel, Long id){
             Hotel hotelWithId=hotelRepository.findById(id).orElse(null);
+           Users manager= hotelWithId.getManager();
             if(hotelWithId != null){
             hotelWithId.setName(hotel.getName());
             hotelWithId.setCity(hotel.getCity());

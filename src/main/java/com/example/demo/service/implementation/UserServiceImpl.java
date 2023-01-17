@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users addUser(Users user) {
+
         user.setBanned(false);
         String pw = user.getPassword();
         user.setPassword(passwordEncoder.encode(pw));

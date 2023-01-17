@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.Users;
+import com.example.demo.security.model.myUser;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
         user.getRole().forEach(r ->{
             authorities.add(new SimpleGrantedAuthority(r.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
+        return new myUser(user.getUsername(),user.getPassword(),authorities, user.getId(),user.isBanned(),user.getFirstName()+' '+user.getLastName());
     }
 }

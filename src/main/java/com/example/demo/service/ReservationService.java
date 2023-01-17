@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Reservation;
 import com.example.demo.entity.Room;
+import com.example.demo.entity.Users;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ReservationService {
     boolean isRoomAvailable(Room room, LocalDate startDate, LocalDate endDate);
 
     double resPrice(Room room, LocalDate startDate, LocalDate endDate);
+
+    List<Reservation> getReservationByUserId(Users users);
 }

@@ -1,4 +1,4 @@
-package com.example.demo.rest;
+package com.example.demo.entity.rest;
 
 import com.example.demo.entity.Room;
 import com.example.demo.service.RoomService;

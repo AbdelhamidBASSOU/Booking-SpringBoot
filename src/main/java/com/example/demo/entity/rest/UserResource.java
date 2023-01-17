@@ -1,4 +1,4 @@
-package com.example.demo.rest;
+package com.example.demo.entity.rest;
 
 import com.example.demo.entity.Users;
 import com.example.demo.service.UserService;
@@ -17,7 +17,6 @@ public class UserResource {
 
     @PostMapping("/add")
     public Users addUser(@RequestBody Users user){
-        System.out.println("dfghjk");
         return userService.addUser(user);
     }
 

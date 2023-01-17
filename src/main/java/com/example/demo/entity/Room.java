@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,6 +43,7 @@ public class Room  implements Serializable {
     private Hotel hotel;
 
     @OneToMany(mappedBy = "room",fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"room","client"})
     private List<Reservation> listReservation;
 
 }

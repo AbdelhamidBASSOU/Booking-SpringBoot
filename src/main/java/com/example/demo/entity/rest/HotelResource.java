@@ -1,4 +1,4 @@
-package com.example.demo.rest;
+package com.example.demo.entity.rest;
 
 import com.example.demo.entity.Hotel;
 import com.example.demo.service.HotelService;
@@ -35,14 +35,14 @@ public class HotelResource {
     }
 
     @GetMapping("/id/{id}")
-    @PostAuthorize("hasAnyAuthority('Manager','Admin','Client')")
+    //@PostAuthorize("hasAnyAuthority('Manager','Admin','Client')")
 
     public Hotel getOne(@PathVariable("id") Long id) {
         return hotelService.getOne(id);
     }
 
     @GetMapping("/")
-    @PostAuthorize("hasAnyAuthority('Manager','Admin','Client')")
+   // @PostAuthorize("hasAnyAuthority('Manager','Admin','Client')")
 
     public List<Hotel> findAll(){
         return hotelService.getAll();
